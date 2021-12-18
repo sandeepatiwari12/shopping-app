@@ -12,7 +12,10 @@
     "resolveJsonModule": true,
     "downlevelIteration": true,
     "paths": {
-      "*": ["src/*"]
+      "*": ["src/*"],
+      "@shop/comp": ["/Components/*"],
+      "@shop/pages": ["/Pages/*"],
+      "@shop/store": ["/store/*"],
     },
     "lib": ["esnext", "dom", "dom.iterable"],
     "sourceMap": true,

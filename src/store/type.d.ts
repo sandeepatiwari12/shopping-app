@@ -1,13 +1,20 @@
-import store from '../store'
+import store from "@store";
 interface IAction {
   type: string;
   payload: any;
   error: string;
 }
+interface IProduct {
+  currency: string;
+  description: string;
+  id: string;
+  imageUrl: string;
+  name: string;
+  price: number;
+  shippingPrice: number;
+  quantity?: number;
+  total?: number;
+}
 
-// type DispatchType = (args: IAction) => IAction;
-
-// Infer the `RootState` and `AppDispatch` types from the store itself
 type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 type DispatchType = typeof store.dispatch;

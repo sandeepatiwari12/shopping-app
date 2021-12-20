@@ -1,11 +1,11 @@
-// import { AppDispatch } from "../../store";
 import { DispatchType } from "../type";
 import {
   GET_PRODUCTS_REQUEST,
   GET_PRODUCTS_SUCCESS,
-  GET_PRODUCTS_FAILED,
+  GET_PRODUCTS_FAILED
 } from "../actionTypes";
-// Load User
+
+// Load Products
 export const getProducts = () => async (dispatch: DispatchType) => {
   dispatch({
     type: GET_PRODUCTS_REQUEST,
@@ -23,7 +23,7 @@ export const getProducts = () => async (dispatch: DispatchType) => {
       console.log(err);
       dispatch({
         type: GET_PRODUCTS_FAILED,
-        error: err
+        error: err,
       });
     });
 };

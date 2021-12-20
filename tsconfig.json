@@ -7,20 +7,21 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "allowJs": true,
-    "baseUrl": "src",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "downlevelIteration": true,
+    "baseUrl": "src",
     "paths": {
-      "*": ["src/*"],
-      "@shop/comp": ["/Components/*"],
-      "@shop/pages": ["/Pages/*"],
-      "@shop/store": ["/store/*"],
+      "@components/*": ["Components/*"],
+      "@pages/*": ["Pages/*"],
+      "@store": ["store/index.ts"],
+      "@store/*": ["store/*"],
+      "@utils/*": ["utils/*"],
     },
     "lib": ["esnext", "dom", "dom.iterable"],
     "sourceMap": true,
     "noImplicitAny": false
   },
   "exclude": ["node_modules", "build"],
-  "include": ["./src", "webpack.config.ts"]
+  "include": ["src", "webpack.config.ts"]
 }

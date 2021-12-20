@@ -1,3 +1,4 @@
+import { IAction } from "../type";
 import {
   GET_PRODUCTS_REQUEST,
   GET_PRODUCTS_SUCCESS,
@@ -6,7 +7,7 @@ import {
 
 const initialState = {
   loading: false,
-  products: [],
+  list: [],
 };
 
 const productReducer = (state = initialState, action: IAction) => {
@@ -15,21 +16,20 @@ const productReducer = (state = initialState, action: IAction) => {
     case GET_PRODUCTS_REQUEST:
       return {
         ...state,
-        ...initialState,
-        loading: true
+        loading: true,
       };
     case GET_PRODUCTS_SUCCESS:
+      // localStorage.setItem("products", JSON.stringify(payload));
       return {
         ...state,
         loading: false,
-        products: payload,
+        list: payload,
       };
     case GET_PRODUCTS_FAILED:
       return {
         ...state,
         error,
         loading: false,
-        users: undefined,
       };
     default:
       return state;

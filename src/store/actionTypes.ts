@@ -7,5 +7,14 @@ export const GET_PRODUCTS_SUCCESS = "GET_PRODUCTS_SUCCESS";
 export const ADD_TO_CART_REQUEST = "ADD_TO_CART_REQUEST";
 export const ADD_TO_CART_FAILED = "ADD_TO_CART_FAILED";
 export const ADD_TO_CART_SUCCESS = "ADD_TO_CART_SUCCESS";
-
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
+
+// Contact(Customer)
+export const ADD_CUSTOMER_REQUEST = "ADD_CUSTOMER_REQUEST";
+export const ADD_CUSTOMER_SUCCESS = "ADD_CUSTOMER_SUCCESS";
+export const ADD_CUSTOMER_FAILED = "ADD_CUSTOMER_FAILED";
+
+
+// for local storage key
+export const CART_KEY = "CART_DETAILS";
+export const CUSTOMER_KEY = "CUSTOMER_DETAILS"

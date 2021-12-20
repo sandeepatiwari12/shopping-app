@@ -3,10 +3,10 @@ import {
   ADD_TO_CART_REQUEST,
   ADD_TO_CART_SUCCESS,
   ADD_TO_CART_FAILED,
-  REMOVE_FROM_CART
+  REMOVE_FROM_CART,
 } from "../actionTypes";
 
-// Load User
+// Add to the cart
 export const addToCart = (payload: IProduct) => (dispatch: DispatchType) => {
   dispatch({
     type: ADD_TO_CART_REQUEST,
@@ -24,6 +24,7 @@ export const addToCart = (payload: IProduct) => (dispatch: DispatchType) => {
   }
 };
 
+// remove from cart
 export const removeFromCart = (id: string) => (dispatch: DispatchType) => {
   return dispatch({
     type: REMOVE_FROM_CART,

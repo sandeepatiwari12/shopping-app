@@ -5,7 +5,25 @@ import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 
 const webpackConfig = (): Configuration => ({
-  entry: "./src/index.tsx",
+  entry: {
+    index: {
+      import: "./src/index.tsx",
+      dependOn: "shared",
+    },
+    products: {
+      import: "./src/Pages/Products/index.tsx",
+      dependOn: "shared",
+    },
+    cart: {
+      import: "./src/Pages/Cart/index.tsx",
+      dependOn: "shared",
+    },
+    shipping: {
+      import: "./src/Pages/Shipping/index.tsx",
+      dependOn: "shared",
+    },
+    shared: "lodash",
+  },
   ...(process.env.production || !process.env.development
     ? {}
     : { devtool: "eval-source-map" }),
@@ -15,11 +33,17 @@ const webpackConfig = (): Configuration => ({
     plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.json" })],
   },
   output: {
+    filename: "[name].bundle.js",
     path: path.join(__dirname, "/build"),
-    filename: "build.js",
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
   },
   module: {
     rules: [
+      { test: /\.txt$/, use: "raw-loader" },
       {
         test: /\.tsx?$/,
         loader: "ts-loader",

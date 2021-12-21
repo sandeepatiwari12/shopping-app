@@ -14,6 +14,7 @@ import Loader from '@components/Loader';
 import ContactForm from '@components/Forms/Contact';
 import Payment from '@components/Forms/Payment';
 import useCalculation from '@utils/hooks/useCalculation';
+import AlertDialog from '@components/Alert';
 
 interface CartProps {
     loading: boolean;
@@ -43,12 +44,13 @@ function Shipping({ loading, cartItems, addCustomerDetails, createOrder, formDat
     const routeLocation = useLocation();
     const navigate = useNavigate()
     const [isContact, setContactForm] = useState<boolean>(true);
+    const [isOpen, setOpen] = useState<boolean>(false);
 
 
     useEffect(() => {
         setValue(cartItems);
-        if(cartItems.length < 1) navigate('/products');
-    }, [setValue, cartItems, navigate]);
+        if (cartItems.length < 1 && !isOpen) navigate('/products');
+    }, [setValue, cartItems, navigate, isOpen]);
 
     useEffect(() => {
         setContactForm(routeLocation.pathname === '/shipping' ? true : false);
@@ -60,10 +62,17 @@ function Shipping({ loading, cartItems, addCustomerDetails, createOrder, formDat
     }
     const proceedToPay = (values: any) => {
         createOrder({ order: values, customerDetails: formData });
-        navigate('/products')
+        setOpen(true);
     }
+    const onAlertClose = () => setOpen(false);
     return (
         <Box>
+            {isOpen && <AlertDialog open={isOpen} title='Order Placed Successfully' onClose={onAlertClose}>
+                <Box>
+                    <Typography variant='h5'>Thanks for shopping with us</Typography>
+                    <Typography variant='body1'>Your order has been placed successfully, you'll be notified once your order get dispatched</Typography>
+                </Box>
+            </AlertDialog>}
             {loading && <Loader />}
             <Flex justifyContent={'space-between'}>
                 <Box width={1 / 2}>

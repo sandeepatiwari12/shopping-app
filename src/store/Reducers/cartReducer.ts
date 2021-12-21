@@ -4,27 +4,13 @@ import {
   ADD_TO_CART_SUCCESS,
   ADD_TO_CART_FAILED,
   REMOVE_FROM_CART,
+  CLEAR_CART,
   CART_KEY
 } from "../actionTypes";
 
 const initialState = {
   loading: false,
   list: JSON.parse(localStorage.getItem(CART_KEY) || "[]"),
-};
-
-const calculatePricing = (cartItems: IProduct[]) => {
-  let obj = {
-    amount: 0,
-    shipping: 0,
-    tax: 0,
-    quantities: 0
-  }
-  cartItems.forEach((product: IProduct) => {
-    obj.amount += product.total;
-    obj.shipping += product.shippingPrice;
-    obj.quantities += product.quantity;
-  });
-  return obj;
 };
 
 const cartReducer = (state = initialState, action: IAction) => {
@@ -64,7 +50,6 @@ const cartReducer = (state = initialState, action: IAction) => {
         ...state,
         loading: false,
         list: cartItems,
-        ...calculatePricing(cartItems)
       };
     case ADD_TO_CART_FAILED:
       return {
@@ -81,6 +66,12 @@ const cartReducer = (state = initialState, action: IAction) => {
         ...state,
         list: cartItem,
       };
+    case CLEAR_CART:
+      localStorage.removeItem(CART_KEY);
+      return {
+        ...state,
+        list: []
+      }
     default:
       return state;
   }

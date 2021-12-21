@@ -2,24 +2,25 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { formatPrice } from '@utils/price-format';
-import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 // Redux
 import { connect } from 'react-redux';
-import { addCustomerDetails } from '@store/Actions/orderAction';
+import { addCustomerDetails, createOrder } from '@store/Actions/orderAction';
 import { IProduct, RootState } from '@store/type';
 // Component
 import Flex from "@components/Flex";
 import Loader from '@components/Loader';
-import { StyledLink } from '@components/CartButton';
 import ContactForm from '@components/Forms/Contact';
+import Payment from '@components/Forms/Payment';
+import useCalculation from '@utils/hooks/useCalculation';
 
 interface CartProps {
     loading: boolean;
     cartItems: IProduct[];
     formData: any;
     addCustomerDetails: (obj: any) => void;
+    createOrder: (obj: any) => void;
 }
 
 export const StyledFlex = styled(Flex)`
@@ -32,41 +33,43 @@ export const Para = styled(Typography)`
     line-height: 1;
 `
 
-function Shipping({ loading, cartItems, addCustomerDetails, formData }: CartProps) {
-    const currency: string = 'USD';
-    const [payable, setAmount] = useState<number>(0);
-    const [shipping, setShipping] = useState<number>(0);
-    const [tax, setTax] = useState<number>(0);
-    const [items, setItems] = useState<number>(0);
+function Shipping({ loading, cartItems, addCustomerDetails, createOrder, formData }: CartProps) {
+    const {
+        currency,
+        payable,
+        shipping,
+        tax,
+        items, setValue } = useCalculation();
+    const routeLocation = useLocation();
+    const navigate = useNavigate()
+    const [isContact, setContactForm] = useState<boolean>(true);
 
 
     useEffect(() => {
-        let amount: number = 0;
-        let shipping: number = 0;
-        let tax: number = 0;
-        let quantities: number = 0;
-        cartItems.forEach((p: IProduct) => {
-            amount += p.total;
-            shipping += p.shippingPrice;
-            quantities += p.quantity
-        });
-        setAmount(amount);
-        setShipping(shipping);
-        setTax(tax);
-        setItems(quantities);
-    }, [setAmount, setShipping, setTax, cartItems]);
+        setValue(cartItems);
+        if(cartItems.length < 1) navigate('/products');
+    }, [setValue, cartItems, navigate]);
+
+    useEffect(() => {
+        setContactForm(routeLocation.pathname === '/shipping' ? true : false);
+    }, [setContactForm, routeLocation]);
 
     const saveCustomerDetails = (values: any) => {
-        addCustomerDetails(values)
+        addCustomerDetails(values);
+        navigate('payment')
+    }
+    const proceedToPay = (values: any) => {
+        createOrder({ order: values, customerDetails: formData });
+        navigate('/products')
     }
     return (
         <Box>
             {loading && <Loader />}
             <Flex justifyContent={'space-between'}>
                 <Box width={1 / 2}>
-                    <Typography variant='h4'>Shipping</Typography>
-
-                    <ContactForm onSumbitForm={(event) => saveCustomerDetails(event)} formData={formData} />
+                    <Typography variant='h4'>{isContact ? 'Shipping' : 'Payment'}</Typography>
+                    {isContact && <ContactForm onSumbitForm={(event) => saveCustomerDetails(event)} formData={formData} />}
+                    {!isContact && <Payment onSumbitForm={(event) => { proceedToPay(event) }} formData={{}} />}
                 </Box>
                 <Box width={1 / 3} padding={2} borderLeft={1}>
                     <StyledFlex>
@@ -89,11 +92,6 @@ function Shipping({ loading, cartItems, addCustomerDetails, formData }: CartProp
                         <Para>Grand Total:</Para>
                         <Para>{formatPrice(currency, payable + shipping + tax)}</Para>
                     </StyledFlex>
-                    <Flex padding={2} justifyContent={'space-around'}>
-                        <StyledLink to={'/shipping'}>
-                            <Button color='warning' variant='contained' size='large'>Proceed to pay</Button>
-                        </StyledLink>
-                    </Flex>
                 </Box>
             </Flex>
         </Box>
@@ -106,7 +104,8 @@ const mapStateToProps = (state: RootState) => ({
     formData: state.order.customer
 })
 const mapDispatchToProps = {
-    addCustomerDetails
+    addCustomerDetails,
+    createOrder
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shipping)

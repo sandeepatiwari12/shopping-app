@@ -20,13 +20,14 @@ const Contact = ({onSumbitForm, formData}: ContactFormProps) => {
                 initialValues={formData}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <Typography variant='h5'>Personal Details</Typography>
+                        <Typography variant='h5' mb={2}>Customer Details</Typography>
                         <Flex>
                             <Field name="fullName">
                                 {props => (
                                     <TextField
+                                        fullWidth
                                         required
-                                        sx={{ width: '100%', margin: 1 }}
+                                        sx={{ margin: 1 }}
                                         label='Full Name'
                                         name={props.input.name}
                                         value={props.input.value}

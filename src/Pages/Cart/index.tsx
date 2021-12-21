@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { formatPrice } from '@utils/price-format';
@@ -13,6 +13,7 @@ import Loader from '@components/Loader';
 import CartItem from '@components/CartItem';
 import { StyledLink } from '@components/CartButton';
 import { Para, StyledFlex } from '@pages/Shipping';
+import useCalculation from '@utils/hooks/useCalculation';
 
 interface CartProps {
     loading: boolean;
@@ -25,24 +26,16 @@ interface CartProps {
 const NoItemInCart = () => <Typography component={'h2'}>Your cart is empty.</Typography>;
 
 function Cart({ loading, cartItems, addToCart, removeFromCart }: CartProps) {
-    const currency: string = 'USD';
-    const [payable, setAmount] = useState<number>(0);
-    const [shipping, setShipping] = useState<number>(0);
-    const [tax, setTax] = useState<number>(0);
+    const {
+        currency,
+        payable,
+        shipping,
+        tax, setValue } = useCalculation();
 
 
     useEffect(() => {
-        let amount: number = 0;
-        let shipping: number = 0;
-        let tax: number = 0;
-        cartItems.forEach((p: IProduct) => {
-            amount += p.total;
-            shipping += p.shippingPrice;
-        });
-        setAmount(amount);
-        setShipping(shipping);
-        setTax(tax);
-    }, [setAmount, setShipping, setTax, cartItems]);
+        setValue(cartItems);
+    }, [setValue, cartItems]);
 
     const onRemoveFromCart = (id: string) => {
         removeFromCart(id)

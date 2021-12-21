@@ -21,7 +21,6 @@ const ProductCard = ({ product, onAddToCart, onFavorite }: ProductCardProps) => 
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia
                 component="img"
-                height="140"
                 image={product.imageUrl}
                 alt={product.id}
             />

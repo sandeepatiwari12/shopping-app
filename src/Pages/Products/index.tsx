@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Box, Typography } from '@mui/material';
 // Redux
 import { connect } from 'react-redux';
 import { IProduct, RootState } from '@store/type';

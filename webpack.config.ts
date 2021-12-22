@@ -5,29 +5,8 @@ import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 
 const webpackConfig = (): Configuration => ({
-  entry: {
-    index: {
-      import: "./src/index.tsx",
-      dependOn: "shared",
-    },
-    products: {
-      import: "./src/Pages/Products/index.tsx",
-      dependOn: "shared",
-    },
-    cart: {
-      import: "./src/Pages/Cart/index.tsx",
-      dependOn: "shared",
-    },
-    shipping: {
-      import: "./src/Pages/Shipping/index.tsx",
-      dependOn: "shared",
-    },
-    shared: "lodash",
-  },
-  ...(process.env.production || !process.env.development
-    ? {}
-    : { devtool: "eval-source-map" }),
-
+  // mode: "production",
+  entry: "./src/index.tsx",
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
     plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.json" })],
@@ -36,21 +15,25 @@ const webpackConfig = (): Configuration => ({
     filename: "[name].bundle.js",
     path: path.join(__dirname, "/build"),
   },
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
-  },
+
   module: {
     rules: [
-      { test: /\.txt$/, use: "raw-loader" },
       {
         test: /\.tsx?$/,
-        loader: "ts-loader",
-        options: {
-          transpileOnly: true,
-        },
-        exclude: /build/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "ts-loader",
+            options: {
+              transpileOnly: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.js$/,
+        include: path.resolve(__dirname, "src"),
+        loader: "babel-loader",
       },
       {
         test: /\.s?css$/,
@@ -65,21 +48,50 @@ const webpackConfig = (): Configuration => ({
   },
   plugins: [
     new HtmlWebpackPlugin({
-      // HtmlWebpackPlugin simplifies creation of HTML files to serve your webpack bundles
       favicon: "./public/favicon.ico",
       template: "./public/index.html",
     }),
-    // DefinePlugin allows you to create global constants which can be configured at compile time
     new DefinePlugin({
       "process.env": process.env.production || !process.env.development,
     }),
     new ForkTsCheckerWebpackPlugin({
-      // Speeds up TypeScript type checking and ESLint linting (by moving each to a separate process)
       eslint: {
         files: "./src/**/*.{ts,tsx,js,jsx}",
       },
     }),
   ],
+
+  // generate source map
+  devtool: "inline-source-map",
+  // optimization
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      // cacheGroups: {
+      //   default: false,
+      //   vendors: false,
+
+      //   // vendor chunk
+      //   vendor: {
+      //     name: "vendor",
+      //     chunks: "all",
+      //     test: /node_modules/,
+      //     priority: 20,
+      //   },
+
+      //   // common chunk
+      //   common: {
+      //     name: "common",
+      //     minChunks: 2,
+      //     chunks: "all",
+      //     priority: 10,
+      //     reuseExistingChunk: true,
+      //     enforce: true,
+      //   },
+      // },
+    },
+    runtimeChunk: 'single',
+  },
 });
 
 export default webpackConfig;

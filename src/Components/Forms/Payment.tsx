@@ -1,7 +1,6 @@
-import Box from '@mui/material/Box';
+import { TextField, Typography, Button, Box } from '@mui/material';
 import { Form, Field } from 'react-final-form'
 import React from 'react'
-import { TextField, Typography, Button } from '@mui/material';
 import Flex from '@components/Flex';
 import { required } from '@utils/validator';
 import { formatCreditCardNumber, formatExpirationDate, formatCVC } from '@utils/formatter'

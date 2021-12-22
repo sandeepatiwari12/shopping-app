@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Box, Typography, Button } from '@mui/material';
 import { formatPrice } from '@utils/price-format';
-import Button from '@mui/material/Button';
 // Redux
 import { connect } from 'react-redux';
 import { addToCart, removeFromCart } from '@store/Actions/cartActions';

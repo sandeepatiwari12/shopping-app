@@ -1,12 +1,14 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
+import {
+    Box,
+    Card,
+    CardContent,
+    CardHeader,
+    Avatar,
+    Typography,
+    IconButton,
+    Button
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -23,7 +25,7 @@ interface CartItemProps {
 const CartItem = ({ product, onRemoveFromCart, onAddOrRemove }: CartItemProps) => {
 
     const increaseOrDecrease = (qty: number) => {
-        if(product.quantity > 1 || qty > 0) onAddOrRemove({...product, quantity: qty})
+        if (product.quantity > 1 || qty > 0) onAddOrRemove({ ...product, quantity: qty })
         else onRemoveFromCart(product.id)
     }
     return (

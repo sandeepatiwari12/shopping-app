@@ -10,17 +10,17 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "downlevelIteration": true,
+    "sourceMap": true,
+    "noImplicitAny": false,
     "baseUrl": "src",
     "paths": {
       "@components/*": ["Components/*"],
       "@pages/*": ["Pages/*"],
       "@store": ["store/index.ts"],
       "@store/*": ["store/*"],
-      "@utils/*": ["utils/*"],
+      "@utils/*": ["utils/*"]
     },
-    "lib": ["esnext", "dom", "dom.iterable"],
-    "sourceMap": true,
-    "noImplicitAny": false
+    "lib": ["esnext", "dom", "dom.iterable"]
   },
   "exclude": ["node_modules", "build"],
   "include": ["src", "webpack.config.ts"]
